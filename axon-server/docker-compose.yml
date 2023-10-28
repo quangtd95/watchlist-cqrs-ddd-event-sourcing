@@ -4,3 +4,17 @@ services:
     ports:
       - 8024:8024
       - 8124:8124
+
+  watchlist-view-db:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: investing
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mhsatuck
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "3032:5432"
+volumes:
+  postgres:
