@@ -6,5 +6,12 @@ server:
   port: 3030
 logging:
   level:
-    web: debug
+    web: info
+
+
+#axon:
+#  serializer:
+#    general: jackson
+#    events: jackson
+#    messages: jackson
 

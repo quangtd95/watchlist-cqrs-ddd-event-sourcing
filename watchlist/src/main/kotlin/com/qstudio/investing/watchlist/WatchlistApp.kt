@@ -3,11 +3,14 @@
  */
 package com.qstudio.investing.watchlist
 
+import com.qstudio.investing.watchlist.infrastructure.AxonConfig
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
+import org.springframework.context.annotation.Import
 
 @SpringBootApplication
+@Import(AxonConfig::class)
 class WatchlistApp : SpringBootServletInitializer()
 
 fun main(args: Array<String>) {

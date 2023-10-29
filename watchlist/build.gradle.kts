@@ -15,6 +15,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
@@ -24,6 +25,9 @@ dependencies {
 
     implementation("org.axonframework:axon-spring-boot-starter:4.9.0")
     implementation("io.axoniq.console:console-framework-client-spring-boot-starter:1.0.2")
+
+//    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
+//    implementation("io.r2dbc:r2dbc-postgresql")
 
 
 }
