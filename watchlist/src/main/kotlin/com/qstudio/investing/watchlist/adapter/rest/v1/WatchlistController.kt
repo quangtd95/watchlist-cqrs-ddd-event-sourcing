@@ -1,7 +1,7 @@
 package com.qstudio.investing.watchlist.adapter.rest.v1
 
 import com.qstudio.investing.watchlist.adapter.rest.v1.response.BaseResponse
-import com.qstudio.investing.watchlist.adapter.rest.v1.response.CreateWatchListRequest
+import com.qstudio.investing.watchlist.adapter.rest.v1.request.CreateWatchListRequest
 import com.qstudio.investing.watchlist.adapter.rest.v1.response.CreateWatchListResponse
 import com.qstudio.investing.watchlist.core.command.type.CreateWatchlistCommand
 import com.qstudio.investing.watchlist.core.query.model.WatchlistView
@@ -44,7 +44,12 @@ class WatchlistController(
     suspend fun createWatchlist(@Valid @RequestBody request: CreateWatchListRequest): BaseResponse<Map<String, CreateWatchListResponse>> {
         log.info("creating watchlist: $request; requestId = ${request.requestId}")
 
-        val watchlistId = commandGateway.sendAndWait<String>(CreateWatchlistCommand(request.name))
+        val watchlistId = commandGateway.sendAndWait<String>(
+            CreateWatchlistCommand(
+                userId = request.userId,
+                name = request.name
+            )
+        )
         return BaseResponse.success(mapOf("watchlist" to CreateWatchListResponse(watchlistId)))
     }
 }

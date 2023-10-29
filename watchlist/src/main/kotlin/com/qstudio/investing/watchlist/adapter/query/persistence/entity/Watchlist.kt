@@ -11,6 +11,9 @@ class Watchlist {
     @Column("id")
     lateinit var id: String
 
+    @Column("user_id")
+    lateinit var userId: String
+
     @Column("name")
     lateinit var name: String
 

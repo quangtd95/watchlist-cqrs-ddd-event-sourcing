@@ -16,16 +16,17 @@ class ReactiveWatchlistRepositoryAdapter(private val repo: WatchlistRepository) 
     override suspend fun add(watchlistView: WatchlistView) {
         repo.save(Watchlist().apply {
             id = watchlistView.id
+            userId = watchlistView.userId
             name = watchlistView.name
         })
     }
 
     override suspend fun getById(id: String): WatchlistView? {
-        return repo.findById(id)?.let { WatchlistView(it.id, it.name) }
+        return repo.findById(id)?.let { WatchlistView(it.id, it.userId, it.name) }
     }
 
     override fun getAll(): Flow<WatchlistView> {
-        return repo.findAll().map { WatchlistView(it.id, it.name) }
+        return repo.findAll().map { WatchlistView(it.id, it.userId, it.name) }
     }
 
 }

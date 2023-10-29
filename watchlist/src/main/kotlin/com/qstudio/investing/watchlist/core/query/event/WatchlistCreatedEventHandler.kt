@@ -17,8 +17,11 @@ class WatchlistCreatedEventHandler(
     @EventHandler
     fun on(watchlistCreatedEvent: WatchlistCreatedEvent) {
         runBlocking {
-            logger.info("on @EventHandler at query side")
-            watchlistViewRepository.add(WatchlistView(watchlistCreatedEvent.id, watchlistCreatedEvent.name))
+            with(watchlistCreatedEvent) {
+                logger.info("on @EventHandler at query side")
+                watchlistViewRepository.add(WatchlistView(this.id, this.userId, this.name))
+            }
+
         }
     }
 }

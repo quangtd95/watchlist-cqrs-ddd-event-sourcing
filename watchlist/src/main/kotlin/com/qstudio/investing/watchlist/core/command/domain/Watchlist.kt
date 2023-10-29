@@ -17,19 +17,24 @@ internal class Watchlist {
 
     @AggregateIdentifier
     final val id: String = UUID.randomUUID().toString()
+    var userId: String = ""
     var name: String = ""
 
     constructor()
 
     @CommandHandler
     constructor(command: CreateWatchlistCommand) {
-        AggregateLifecycle.apply(WatchlistCreatedEvent(id, command.name))
+        AggregateLifecycle.apply(WatchlistCreatedEvent(id, command.userId, command.name))
     }
 
 
     @EventSourcingHandler
     fun onStateChanged(watchlistCreatedEvent: WatchlistCreatedEvent) {
-        this.name = watchlistCreatedEvent.name
-        logger.info("watchlist created $name")
+        watchlistCreatedEvent.let {
+            this.userId = it.userId
+            this.name = it.name
+        }
+
+        logger.info("created  watchlist $name for userId = $userId")
     }
 }
