@@ -26,8 +26,17 @@ dependencies {
     implementation("org.axonframework:axon-spring-boot-starter:4.9.0")
     implementation("io.axoniq.console:console-framework-client-spring-boot-starter:1.0.2")
 
-//    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
-//    implementation("io.r2dbc:r2dbc-postgresql")
+    //postgres
+    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
+    implementation("io.r2dbc:r2dbc-postgresql:0.8.13.RELEASE")
+
+
+    //db migration
+    implementation("org.liquibase:liquibase-core")
+    implementation("org.postgresql:postgresql:42.5.4")
+
+    implementation("org.apache.commons:commons-dbcp2:2.10.0")
+
 
 
 }

@@ -8,8 +8,10 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Import
+import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories
 
 @SpringBootApplication
+@EnableR2dbcRepositories
 @Import(AxonConfig::class)
 class WatchlistApp : SpringBootServletInitializer()
 

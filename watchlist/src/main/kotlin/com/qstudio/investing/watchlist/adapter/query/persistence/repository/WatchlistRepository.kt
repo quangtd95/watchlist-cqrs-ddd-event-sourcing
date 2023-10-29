@@ -1,0 +1,25 @@
+package com.qstudio.investing.watchlist.adapter.query.persistence.repository
+
+import com.qstudio.investing.watchlist.adapter.query.persistence.entity.Watchlist
+import com.qstudio.investing.watchlist.core.query.model.WatchlistView
+import com.qstudio.investing.watchlist.core.query.repository.WatchlistViewRepository
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
+import org.springframework.stereotype.Repository
+
+@Repository
+interface WatchlistRepository : CoroutineCrudRepository<Watchlist, String>
+
+@Repository
+class ReactiveWatchlistRepositoryAdapter(private val repo: WatchlistRepository) : WatchlistViewRepository {
+    override suspend fun add(watchlistView: WatchlistView) {
+        repo.save(Watchlist().apply {
+            id = watchlistView.id
+            name = watchlistView.name
+        })
+    }
+
+    override suspend fun get(id: String): WatchlistView? {
+        return repo.findById(id)?.let { WatchlistView(it.id, it.name) }
+    }
+
+}
