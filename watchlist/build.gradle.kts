@@ -37,6 +37,9 @@ dependencies {
 
     implementation("org.apache.commons:commons-dbcp2:2.10.0")
 
+    //swagger
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0")
+
 
 
 }

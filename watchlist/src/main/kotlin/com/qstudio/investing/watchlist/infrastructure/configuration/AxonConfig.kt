@@ -1,4 +1,4 @@
-package com.qstudio.investing.watchlist.infrastructure
+package com.qstudio.investing.watchlist.infrastructure.configuration
 
 import com.thoughtworks.xstream.XStream
 import org.axonframework.common.jdbc.ConnectionProvider
