@@ -4,10 +4,12 @@ import com.qstudio.investing.watchlist.adapter.rest.v1.response.BaseResponse
 import com.qstudio.investing.watchlist.adapter.rest.v1.response.CreateWatchListRequest
 import com.qstudio.investing.watchlist.adapter.rest.v1.response.CreateWatchListResponse
 import com.qstudio.investing.watchlist.core.command.type.CreateWatchlistCommand
-import com.qstudio.investing.watchlist.core.query.type.WatchlistQuery
 import com.qstudio.investing.watchlist.core.query.model.WatchlistView
+import com.qstudio.investing.watchlist.core.query.type.WatchlistGetAllQuery
+import com.qstudio.investing.watchlist.core.query.type.WatchlistGetByIdQuery
 import jakarta.validation.Valid
 import org.axonframework.commandhandling.gateway.CommandGateway
+import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
@@ -23,8 +25,17 @@ class WatchlistController(
     fun getWatchlist(@Valid @PathVariable watchlistId: String): BaseResponse<Any?> {
         log.info("querying watchlist: $watchlistId")
         val watchlist = queryGateway.query(
-            WatchlistQuery(watchlistId),
+            WatchlistGetByIdQuery(watchlistId),
             WatchlistView::class.java
+        ).get()
+        return BaseResponse.success(watchlist)
+    }
+
+    @GetMapping
+    suspend fun getAllWatchlist(): BaseResponse<List<WatchlistView>> {
+        log.info("querying all watchlist")
+        val watchlist = queryGateway.query(
+            WatchlistGetAllQuery(), ResponseTypes.multipleInstancesOf(WatchlistView::class.java)
         ).get()
         return BaseResponse.success(watchlist)
     }
@@ -35,6 +46,5 @@ class WatchlistController(
 
         val watchlistId = commandGateway.sendAndWait<String>(CreateWatchlistCommand(request.name))
         return BaseResponse.success(mapOf("watchlist" to CreateWatchListResponse(watchlistId)))
-
     }
 }

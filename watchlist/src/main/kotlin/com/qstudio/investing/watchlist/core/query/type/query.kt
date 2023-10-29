@@ -1,3 +1,5 @@
 package com.qstudio.investing.watchlist.core.query.type
 
-data class WatchlistQuery(val watchlistId: String)
+data class WatchlistGetByIdQuery(val watchlistId: String)
+
+class WatchlistGetAllQuery
