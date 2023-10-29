@@ -1,5 +1,18 @@
 package com.qstudio.investing.watchlist.core.command.type
 
-data class CreateWatchlistCommand(val userId: String, val name: String)
+import org.axonframework.modelling.command.TargetAggregateIdentifier
+
+data class CreateWatchlistCommand(
+    @TargetAggregateIdentifier
+    val watchlistId: String,
+    val userId: String,
+    val name: String
+)
+
+data class RenameWatchlistCommand(
+    @TargetAggregateIdentifier
+    val watchlistId: String,
+    val newName: String
+)
 
 

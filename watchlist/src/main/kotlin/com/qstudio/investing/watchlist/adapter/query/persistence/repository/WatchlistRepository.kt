@@ -13,13 +13,23 @@ interface WatchlistRepository : CoroutineCrudRepository<Watchlist, String>
 
 @Repository
 class ReactiveWatchlistRepositoryAdapter(private val repo: WatchlistRepository) : WatchlistViewRepository {
-    override suspend fun add(watchlistView: WatchlistView) {
-        repo.save(Watchlist().apply {
-            id = watchlistView.id
-            userId = watchlistView.userId
-            name = watchlistView.name
-        })
+    override suspend fun save(watchlistView: WatchlistView) {
+        if (repo.existsById(watchlistView.id)) {
+            val watchlist = repo.findById(watchlistView.id)!!
+            watchlist.apply {
+                this.userId = watchlistView.userId
+                this.name = watchlistView.name
+            }
+            repo.save(watchlist)
+        } else {
+            repo.save(Watchlist().apply {
+                id = watchlistView.id
+                userId = watchlistView.userId
+                name = watchlistView.name
+            })
+        }
     }
+
 
     override suspend fun getById(id: String): WatchlistView? {
         return repo.findById(id)?.let { WatchlistView(it.id, it.userId, it.name) }
