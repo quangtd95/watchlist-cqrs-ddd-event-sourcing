@@ -7,11 +7,9 @@ import com.qstudio.investing.watchlist.infrastructure.event.type.WatchlistRename
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier
-import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.modelling.command.AggregateLifecycle.apply
 import org.axonframework.spring.stereotype.Aggregate
 import org.slf4j.LoggerFactory
-import java.util.*
 
 @Aggregate
 internal class Watchlist {
