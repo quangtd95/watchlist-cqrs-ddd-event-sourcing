@@ -5,6 +5,7 @@ plugins {
     id("org.springframework.boot") version "3.1.5"
     id("io.spring.dependency-management") version "1.1.3"
     kotlin("plugin.spring") version "1.9.10"
+    kotlin("plugin.serialization") version "1.9.10"
 }
 
 dependencies {
@@ -22,10 +23,15 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
 
     implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
-    implementation("org.axonframework:axon-spring-boot-starter:4.9.0")
+
+    implementation("org.axonframework:axon-spring-boot-starter:4.9.0") {
+        exclude(group = "org.axonframework", module = "axon-server-connector")
+    }
     implementation("io.axoniq.console:console-framework-client-spring-boot-starter:1.0.2")
     implementation("org.axonframework.extensions.kotlin:axon-kotlin:4.9.0")
+    implementation("org.axonframework.extensions.reactor:axon-reactor:4.9.0")
 
 
     //postgres

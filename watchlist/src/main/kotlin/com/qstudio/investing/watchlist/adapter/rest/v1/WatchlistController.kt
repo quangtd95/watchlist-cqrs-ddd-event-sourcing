@@ -80,9 +80,9 @@ class WatchlistController(
         log.info("renaming watchlist: $request; requestId = ${request.requestId}")
 
         commandGateway
-            .send<Any>(RenameWatchlistCommand(watchlistId, request.newName))
+            .send<Any?>(RenameWatchlistCommand(watchlistId, request.newName))
             .toMono()
-            .awaitSingle()
+            .awaitSingleOrNull()
 
         return BaseResponse.success(mapOf("result" to "rename request accepted"))
     }

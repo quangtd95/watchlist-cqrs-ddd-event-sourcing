@@ -17,7 +17,7 @@ internal class Watchlist {
     private val logger = LoggerFactory.getLogger(Watchlist::class.java)
 
     @AggregateIdentifier
-    final var id: String = ""
+    final lateinit var id: String
     var userId: String = ""
     var name: String = ""
 
@@ -25,8 +25,7 @@ internal class Watchlist {
 
     @CommandHandler
     constructor(command: CreateWatchlistCommand) {
-        this.id = command.watchlistId
-        apply(WatchlistCreatedEvent(this.id, command.userId, command.name))
+        apply(WatchlistCreatedEvent(command.watchlistId, command.userId, command.name))
     }
 
     @CommandHandler
@@ -37,6 +36,7 @@ internal class Watchlist {
     @EventSourcingHandler
     fun onStateChanged(watchlistCreatedEvent: WatchlistCreatedEvent) {
         watchlistCreatedEvent.let {
+            this.id = it.id
             this.userId = it.userId
             this.name = it.name
             logger.info("created  watchlist $name for userId = $userId")
