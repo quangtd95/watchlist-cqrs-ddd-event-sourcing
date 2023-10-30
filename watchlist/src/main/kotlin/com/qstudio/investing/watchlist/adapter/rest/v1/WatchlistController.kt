@@ -17,7 +17,8 @@ import jakarta.validation.constraints.NotNull
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.axonframework.commandhandling.gateway.CommandGateway
-import org.axonframework.messaging.responsetypes.ResponseTypes
+import org.axonframework.extensions.kotlin.query
+import org.axonframework.extensions.kotlin.queryMany
 import org.axonframework.queryhandling.QueryGateway
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
@@ -27,17 +28,18 @@ import java.util.*
 @RestController
 @RequestMapping("/api/watchlist")
 class WatchlistController(
-    private val commandGateway: CommandGateway, private val queryGateway: QueryGateway
+    private val commandGateway: CommandGateway,
+    private val queryGateway: QueryGateway
 ) {
-    private val log = LoggerFactory.getLogger(WatchlistController::class.java)
+    private val log = LoggerFactory.getLogger(this::class.java)
 
     @GetMapping("/{watchlistId}")
     suspend fun getWatchlist(@Valid @PathVariable watchlistId: String): BaseResponse<GetWatchlistResponse> {
         log.info("querying watchlist: $watchlistId")
-        val watchlist = queryGateway.query(
-            WatchlistGetByIdQuery(watchlistId),
-            WatchlistView::class.java
-        ).toMono().awaitSingleOrNull()
+        val watchlist = queryGateway
+            .query<WatchlistView?, WatchlistGetByIdQuery>(WatchlistGetByIdQuery(watchlistId))
+            .toMono()
+            .awaitSingleOrNull()
 
         return BaseResponse.success(GetWatchlistResponse(watchlist))
     }
@@ -45,9 +47,10 @@ class WatchlistController(
     @GetMapping
     suspend fun getAllWatchlist(): BaseResponse<GetAllWatchlistResponse> {
         log.info("querying all watchlist")
-        val watchlists = queryGateway.query(
-            WatchlistGetAllQuery(), ResponseTypes.multipleInstancesOf(WatchlistView::class.java)
-        ).toMono().awaitSingle()
+        val watchlists = queryGateway
+            .queryMany<WatchlistView, WatchlistGetAllQuery>(WatchlistGetAllQuery())
+            .toMono()
+            .awaitSingle()
         return BaseResponse.success(GetAllWatchlistResponse(watchlists))
 
     }
@@ -57,13 +60,15 @@ class WatchlistController(
         log.info("creating watchlist: $request; requestId = ${request.requestId}")
 
 
-        val newId = commandGateway.send<String>(
-            CreateWatchlistCommand(
+        val newId = commandGateway
+            .send<String>(
+                CreateWatchlistCommand(
                 watchlistId = UUID.randomUUID().toString(),
                 userId = request.userId,
                 name = request.name
-            )
-        ).toMono().awaitSingle()
+                )
+            ).toMono()
+            .awaitSingle()
         return BaseResponse.success(CreateWatchListResponse(WatchlistView(newId, request.userId, request.name)))
     }
 
@@ -74,7 +79,10 @@ class WatchlistController(
     ): BaseResponse<Map<String, String>> {
         log.info("renaming watchlist: $request; requestId = ${request.requestId}")
 
-        commandGateway.send<Any>(RenameWatchlistCommand(watchlistId, request.newName)).toMono().awaitSingle()
+        commandGateway
+            .send<Any>(RenameWatchlistCommand(watchlistId, request.newName))
+            .toMono()
+            .awaitSingle()
 
         return BaseResponse.success(mapOf("result" to "rename request accepted"))
     }

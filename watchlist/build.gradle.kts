@@ -25,6 +25,8 @@ dependencies {
 
     implementation("org.axonframework:axon-spring-boot-starter:4.9.0")
     implementation("io.axoniq.console:console-framework-client-spring-boot-starter:1.0.2")
+    implementation("org.axonframework.extensions.kotlin:axon-kotlin:4.9.0")
+
 
     //postgres
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
