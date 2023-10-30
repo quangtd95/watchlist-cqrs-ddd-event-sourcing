@@ -27,7 +27,8 @@ internal class Watchlist {
 
     @CommandHandler
     constructor(command: CreateWatchlistCommand) {
-        apply(WatchlistCreatedEvent(command.watchlistId, command.userId, command.name))
+        this.id = command.watchlistId
+        apply(WatchlistCreatedEvent(this.id, command.userId, command.name))
     }
 
     @CommandHandler
@@ -38,7 +39,6 @@ internal class Watchlist {
     @EventSourcingHandler
     fun onStateChanged(watchlistCreatedEvent: WatchlistCreatedEvent) {
         watchlistCreatedEvent.let {
-            this.id = it.id
             this.userId = it.userId
             this.name = it.name
             logger.info("created  watchlist $name for userId = $userId")

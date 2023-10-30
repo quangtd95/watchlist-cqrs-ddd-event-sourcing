@@ -2,12 +2,12 @@ package com.qstudio.investing.watchlist.infrastructure.configuration
 
 import com.thoughtworks.xstream.XStream
 import org.axonframework.common.jdbc.ConnectionProvider
-import org.axonframework.common.jdbc.DataSourceConnectionProvider
 import org.axonframework.eventhandling.tokenstore.TokenStore
 import org.axonframework.eventhandling.tokenstore.jdbc.JdbcTokenStore
 import org.axonframework.eventhandling.tokenstore.jdbc.PostgresTokenTableFactory
 import org.axonframework.eventhandling.tokenstore.jdbc.TokenSchema
 import org.axonframework.serialization.json.JacksonSerializer
+import org.axonframework.spring.jdbc.SpringDataSourceConnectionProvider
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -21,7 +21,7 @@ class AxonConfig {
     }
 
     @Bean
-    fun querySideTokenStore(connectionProvider: ConnectionProvider): TokenStore {
+    fun tokenStore(connectionProvider: ConnectionProvider): TokenStore {
         val jdbcTokenStore = JdbcTokenStore.builder()
             .connectionProvider(connectionProvider)
             .serializer(JacksonSerializer.defaultSerializer())
@@ -33,13 +33,17 @@ class AxonConfig {
     }
 
     @Bean
-    fun jdbcQueryConnectionProvider(dataSource: DataSource): ConnectionProvider {
-        return DataSourceConnectionProvider(dataSource)
+    fun connectionProvider(dataSource: DataSource): ConnectionProvider {
+        return SpringDataSourceConnectionProvider(dataSource)
     }
 
     @Bean
     fun jdbcQueryDataSource(): DataSource {
-        return DataSourceBuilder.create().url("jdbc:postgresql://localhost:3032/investing").username("postgres")
-            .password("mhsatuck").driverClassName("org.postgresql.Driver").build()
+        return DataSourceBuilder.create()
+            .url("jdbc:postgresql://localhost:3032/investing")
+            .username("postgres")
+            .password("mhsatuck")
+            .driverClassName("org.postgresql.Driver")
+            .build()
     }
 }
