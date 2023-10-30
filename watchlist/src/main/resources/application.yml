@@ -20,7 +20,9 @@ spring:
     user: postgres
     password: mhsatuck
     enabled: true
-
-  jpa:
-    hibernate:
-      ddl-auto: update
+  datasource:
+    dbcp2:
+      username: postgres
+      password: mhsatuck
+      url: jdbc:postgresql://localhost:3032/investing
+      driver-class-name: org.postgresql.Driver
