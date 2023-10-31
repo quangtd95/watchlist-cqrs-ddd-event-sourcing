@@ -1,3 +1,3 @@
 rootProject.name = "investing-be"
-include("watchlist")
+include("watchlist-command")
 include("watchlist-query")

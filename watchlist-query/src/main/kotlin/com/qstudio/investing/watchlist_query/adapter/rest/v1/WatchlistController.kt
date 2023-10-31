@@ -9,7 +9,6 @@ import com.qstudio.investing.watchlist_query.core.query.type.WatchlistGetByIdQue
 import jakarta.validation.Valid
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
-import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.extensions.kotlin.query
 import org.axonframework.extensions.kotlin.queryMany
 import org.axonframework.queryhandling.QueryGateway
@@ -23,7 +22,6 @@ import reactor.kotlin.core.publisher.toMono
 @RestController
 @RequestMapping("/api/watchlist")
 class WatchlistController(
-    private val commandGateway: CommandGateway,
     private val queryGateway: QueryGateway
 ) {
     private val log = LoggerFactory.getLogger(this::class.java)
