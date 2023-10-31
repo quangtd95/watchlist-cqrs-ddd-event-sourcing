@@ -14,18 +14,6 @@ logging:
 
 
 spring:
-  r2dbc:
-    username: postgres
-    password: mhsatuck
-    url: r2dbc:postgresql://localhost:3032/investing
-
-  liquibase:
-    url: jdbc:postgresql://localhost:3032/investing
-    change-log: classpath:db/changelog/changelog-master.xml
-    user: postgres
-    password: mhsatuck
-    enabled: true
-
   datasource:
     dbcp2:
       username: postgres

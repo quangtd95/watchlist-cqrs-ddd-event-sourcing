@@ -14,14 +14,18 @@
  */
 package com.qstudio.investing
 
+import org.gradle.api.JavaVersion
+
 /**
  * @author Quang Thai
  *
  */
-const val JDK_VERSION = "17"
+val JDK_VERSION = JavaVersion.VERSION_17
 const val JVM_TARGET_VERSION = "17"
 
-const val SPRING_BOOT_FRAMEWORK_VERSION = "3.1.5"
-const  val SPRING_BOOT_DEPENDENCY_MANAGEMENT_VERSION = "1.1.13"
-const val KOTLIN_API_VERSION = "1.6"
-const val KOTLIN_LANGUAGE_VERSION = "1.6"
+const val SPRING_BOOT_VERSION = "3.1.5"
+const val R2DBC_POSTGRES_VERSION = "0.8.13.RELEASE"
+const val JDBC_POSTGRES_VERSION = "42.5.4"
+const val LIQUIBASE_CORE_VERSION = "4.24.0"
+const val COMMONS_DBCP2_VERSION = "2.10.0"
+const val SPRINGDOC_OPENAPI_STARTER_WEBFLUX_UI = "2.2.0"

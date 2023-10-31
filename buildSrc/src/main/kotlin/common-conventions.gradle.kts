@@ -1,3 +1,5 @@
+import com.qstudio.investing.JDK_VERSION
+import com.qstudio.investing.JVM_TARGET_VERSION
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -18,12 +20,12 @@ configurations {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JDK_VERSION
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "17"
+        jvmTarget = JVM_TARGET_VERSION
     }
 }

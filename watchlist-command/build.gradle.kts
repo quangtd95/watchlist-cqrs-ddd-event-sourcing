@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.qstudio.investing.*
 
 plugins {
     id("application-conventions")
@@ -8,36 +8,25 @@ plugins {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
+    //rest api & validation
+    implementation("org.springframework.boot:spring-boot-starter-webflux:$SPRING_BOOT_VERSION")
+    implementation("org.springframework.boot:spring-boot-starter-validation:$SPRING_BOOT_VERSION")
 
-    //postgres
-    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
-    implementation("io.r2dbc:r2dbc-postgresql:0.8.13.RELEASE")
-
-    //db migration
-    implementation("org.liquibase:liquibase-core")
-    implementation("org.postgresql:postgresql:42.5.4")
-
-    implementation("org.apache.commons:commons-dbcp2:2.10.0")
+    //jdbc postgres & connection pool for event store
+    implementation("org.postgresql:postgresql:$JDBC_POSTGRES_VERSION")
+    implementation("org.apache.commons:commons-dbcp2:$COMMONS_DBCP2_VERSION")
 
     //swagger
-    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:$SPRINGDOC_OPENAPI_STARTER_WEBFLUX_UI")
 
     //amqp
-    implementation("org.springframework.boot:spring-boot-starter-amqp")
+    implementation("org.springframework.boot:spring-boot-starter-amqp:$SPRING_BOOT_VERSION")
 
     implementation(project(":watchlist-shared-kernel"))
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "17"
-    }
-}
 
 application {
     // Define the main class for the application.
-    mainClass.set("com.qstudio.investing.app.AppKt")
+    mainClass.set("com.qstudio.investing.watchlist_command.WatchlistCommandApp.kt")
 }
