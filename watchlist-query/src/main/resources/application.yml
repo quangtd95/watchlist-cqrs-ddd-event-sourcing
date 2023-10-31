@@ -2,6 +2,13 @@ axoniq:
   console:
     credentials: 5fd32c85-0:bf1b0c38f851447fad1951aa3ceb12fc
 
+axon:
+  eventhandling:
+    processors:
+      watchlistEvents:
+        source: amqpMessageSource
+        mode: subscribing
+
 server:
   port: 3031
 logging:

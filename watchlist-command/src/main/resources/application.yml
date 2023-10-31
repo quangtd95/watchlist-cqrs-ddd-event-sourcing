@@ -4,7 +4,7 @@ axoniq:
 
 axon:
   amqp:
-    exchange: watchlist.events
+    exchange: ex.watchlist.events
 
 server:
   port: 3030

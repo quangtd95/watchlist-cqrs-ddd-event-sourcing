@@ -50,7 +50,6 @@ class AxonCommandConfig {
         allowTypesByWildcard(arrayOf("com.qstudio.**"))
     }
 
-    //TODO: use the same data source for commands and queries is not the best practice
     @Qualifier("axonDataSource")
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource.dbcp2")

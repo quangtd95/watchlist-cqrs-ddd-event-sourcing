@@ -13,6 +13,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation:$SPRING_BOOT_VERSION")
 
     //jdbc postgres & connection pool for event store
+    implementation("org.springframework.data:spring-data-jdbc:$SPRING_BOOT_VERSION")
     implementation("org.postgresql:postgresql:$JDBC_POSTGRES_VERSION")
     implementation("org.apache.commons:commons-dbcp2:$COMMONS_DBCP2_VERSION")
 

@@ -28,6 +28,9 @@ dependencies {
     //swagger
     implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0")
 
+    //amqp
+    implementation("org.springframework.boot:spring-boot-starter-amqp:$SPRING_BOOT_VERSION")
+
     implementation(project(":watchlist-shared-kernel"))
 
 }
