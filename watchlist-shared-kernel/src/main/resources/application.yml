@@ -2,12 +2,8 @@ axoniq:
   console:
     credentials: 5fd32c85-0:bf1b0c38f851447fad1951aa3ceb12fc
 
-axon:
-  amqp:
-    exchange: watchlist.events
-
 server:
-  port: 3030
+  port: 3031
 logging:
   level:
     web: info
@@ -18,14 +14,12 @@ spring:
     username: postgres
     password: mhsatuck
     url: r2dbc:postgresql://localhost:3032/investing
-
   liquibase:
     url: jdbc:postgresql://localhost:3032/investing
     change-log: classpath:db/changelog/changelog-master.xml
     user: postgres
     password: mhsatuck
     enabled: true
-
   datasource:
     dbcp2:
       username: postgres

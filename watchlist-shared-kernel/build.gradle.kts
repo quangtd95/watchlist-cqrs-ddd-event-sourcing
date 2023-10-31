@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("application-conventions")
+    id("library-conventions")
     id("org.springframework.boot") version "3.1.5"
     id("io.spring.dependency-management") version "1.1.3"
     kotlin("plugin.spring") version "1.9.10"
@@ -48,12 +48,6 @@ dependencies {
     //swagger
     implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0")
 
-    //amqp
-    implementation("org.springframework.boot:spring-boot-starter-amqp")
-    implementation("org.axonframework.extensions.amqp:axon-amqp-spring-boot-starter:4.9.0")
-
-    implementation(project(":watchlist-shared-kernel"))
-
 
 
 }
@@ -65,7 +59,3 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-application {
-    // Define the main class for the application.
-    mainClass.set("com.qstudio.investing.app.AppKt")
-}

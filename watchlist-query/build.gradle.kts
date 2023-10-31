@@ -48,6 +48,8 @@ dependencies {
     //swagger
     implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0")
 
+    implementation(project(":watchlist-shared-kernel"))
+
 
 
 }

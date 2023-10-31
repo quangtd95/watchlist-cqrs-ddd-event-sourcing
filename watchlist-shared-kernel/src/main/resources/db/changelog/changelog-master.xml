@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd"
+        logicalFilePath="centralDbChangeLog.xml">
+
+    <include file="v1/01_create_watchlist_table.sql" relativeToChangelogFile="true"/>
+    <include file="v1/02_add_version_to_watchlist_table.sql" relativeToChangelogFile="true"/>
+    <include file="v1/03_add_user_id_to_watchlist_table.sql" relativeToChangelogFile="true"/>
+</databaseChangeLog>
