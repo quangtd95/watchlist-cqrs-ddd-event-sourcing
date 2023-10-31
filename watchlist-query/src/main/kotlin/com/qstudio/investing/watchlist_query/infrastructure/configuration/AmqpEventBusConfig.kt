@@ -14,7 +14,7 @@ class AmqpEventBusConfig {
     @Bean
     fun amqpMessageSource(messageConverter: AMQPMessageConverter): SpringAMQPMessageSource {
         return object : SpringAMQPMessageSource(messageConverter) {
-            @RabbitListener(queues = ["#{axon.amqp.queue}"])
+            @RabbitListener(queues = ["\${axon.amqp.queue}"])
             override fun onMessage(message: Message?, channel: Channel?) {
                 println("amqp event $message received")
                 super.onMessage(message, channel)

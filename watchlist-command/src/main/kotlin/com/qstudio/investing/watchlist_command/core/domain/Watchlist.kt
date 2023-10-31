@@ -25,12 +25,19 @@ internal class Watchlist {
 
     @CommandHandler
     constructor(command: CreateWatchlistCommand) {
-        apply(WatchlistCreatedEvent(command.watchlistId, command.userId, command.name))
+        apply(WatchlistCreatedEvent().apply {
+            this.id = command.watchlistId
+            this.userId = command.userId
+            this.name = command.name
+        })
     }
 
     @CommandHandler
     fun on(command: RenameWatchlistCommand) {
-        apply(WatchlistRenamedEvent(id, command.newName))
+        apply(WatchlistRenamedEvent().apply {
+            this.id = command.watchlistId
+            this.newName = command.newName
+        })
     }
 
     @EventSourcingHandler

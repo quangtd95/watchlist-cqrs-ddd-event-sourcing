@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class AmqpMessageBusConfig(private val amqpProperties: AMQPProperties) {
 
-    @Value("#{axon.ampq.queue}")
+    @Value("\${axon.amqp.queue}")
     private lateinit var queue: String
 
     @Bean
