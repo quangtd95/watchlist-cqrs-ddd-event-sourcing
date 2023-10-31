@@ -5,6 +5,7 @@ import com.qstudio.investing.watchlist_command.adapter.api.rest.request.RenameWa
 import com.qstudio.investing.watchlist_command.adapter.api.rest.response.BaseResponse
 import com.qstudio.investing.watchlist_command.adapter.api.rest.response.CreateWatchListResponse
 import com.qstudio.investing.watchlist_command.adapter.api.rest.response.WatchlistResponse
+import com.qstudio.investing.watchlist_command.core.type.CreateUserWatchlistCommand
 import com.qstudio.investing.watchlist_command.core.type.CreateWatchlistCommand
 import com.qstudio.investing.watchlist_command.core.type.RenameWatchlistCommand
 import jakarta.validation.Valid
@@ -19,29 +20,35 @@ import reactor.kotlin.core.publisher.toMono
 import java.util.*
 
 @RestController
-@RequestMapping("/api/watchlist")
+@RequestMapping("/api/users/{userId}")
 class WatchlistCommandDispatcher(
     private val commandGateway: CommandGateway
 ) {
     private val log = LoggerFactory.getLogger(this::class.java)
 
     @PostMapping
-    suspend fun createWatchlist(@Valid @RequestBody request: CreateWatchListRequest): BaseResponse<CreateWatchListResponse> {
+    suspend fun createUserWatchlist(
+        @Valid @PathVariable userId: String
+    ): BaseResponse<String> {
+        log.info("creating user watchlist for user $userId")
+        val id = commandGateway.send<String>(CreateUserWatchlistCommand(userId)).toMono().awaitSingle()
+        return BaseResponse.success(id)
+    }
+
+    @PostMapping("/watchlists")
+    suspend fun createWatchlist(
+        @Valid @PathVariable userId: String, @Valid @RequestBody request: CreateWatchListRequest
+    ): BaseResponse<CreateWatchListResponse> {
         log.info("creating watchlist: $request; requestId = ${request.requestId}")
 
+        val command = CreateWatchlistCommand(userId, request.name)
         val newId = commandGateway
-            .send<String>(
-                CreateWatchlistCommand(
-                watchlistId = UUID.randomUUID().toString(),
-                userId = request.userId,
-                name = request.name
-                )
-            ).toMono()
+            .send<String>(command).toMono()
             .awaitSingle()
         return BaseResponse.success(CreateWatchListResponse(WatchlistResponse(newId)))
     }
 
-    @PatchMapping("/{watchlistId}/rename")
+    @PatchMapping("/watchlists/{watchlistId}/rename")
     suspend fun renameWatchlist(
         @Valid @PathVariable @NotNull @NotBlank watchlistId: String,
         @Valid @RequestBody request: RenameWatchListRequest

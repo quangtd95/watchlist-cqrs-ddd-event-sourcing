@@ -2,9 +2,13 @@ package com.qstudio.investing.watchlist_command.core.type
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier
 
+data class CreateUserWatchlistCommand(
+    @TargetAggregateIdentifier
+    val userId: String,
+)
+
 data class CreateWatchlistCommand(
     @TargetAggregateIdentifier
-    val watchlistId: String,
     val userId: String,
     val name: String
 )

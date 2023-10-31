@@ -1,9 +1,13 @@
 package com.qstudio.investing.watchlist_shared_kernel.event.type
 
 
-class WatchlistCreatedEvent {
-    lateinit var id: String
+class UserWatchlistCreatedEvent {
     lateinit var userId: String
+}
+
+class WatchlistCreatedEvent {
+    lateinit var userId: String
+    lateinit var watchlistId: String
     lateinit var name: String
 
 }

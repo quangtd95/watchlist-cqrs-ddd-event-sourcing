@@ -17,12 +17,13 @@ class WatchlistEventProcessor(
 ) {
     private final val logger = LoggerFactory.getLogger(WatchlistEventProcessor::class.java)
 
+
     @EventHandler
     fun on(watchlistCreatedEvent: WatchlistCreatedEvent) {
         runBlocking {
             with(watchlistCreatedEvent) {
                 logger.info("on @EventHandler at query side: WatchlistCreatedEvent")
-                watchlistViewRepository.save(WatchlistView(this.id, this.userId, this.name))
+                watchlistViewRepository.save(WatchlistView(this.watchlistId, this.userId, this.name))
             }
 
         }
