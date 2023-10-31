@@ -3,6 +3,8 @@ axoniq:
     credentials: 5fd32c85-0:bf1b0c38f851447fad1951aa3ceb12fc
 
 axon:
+  amqp:
+    queue: q.watchlist.events
   eventhandling:
     processors:
       watchlistEvents:

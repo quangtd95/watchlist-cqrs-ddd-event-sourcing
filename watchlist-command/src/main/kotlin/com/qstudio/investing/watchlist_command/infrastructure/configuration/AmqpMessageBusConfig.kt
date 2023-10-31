@@ -1,42 +1,38 @@
 package com.qstudio.investing.watchlist_command.infrastructure.configuration
 
+import org.axonframework.extensions.amqp.AMQPProperties
 import org.springframework.amqp.core.Binding
 import org.springframework.amqp.core.BindingBuilder
 import org.springframework.amqp.core.Queue
 import org.springframework.amqp.core.TopicExchange
-import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class AmqpEventBusConfig {
+class AmqpMessageBusConfig(private val amqpProperties: AMQPProperties) {
 
-    companion object {
-        const val TOPIC_EXCHANGE_NAME = "ex.watchlist.events"
+    @Value("#{axon.ampq.queue}")
+    private lateinit var queue: String
 
-        const val QUEUE_NAME = "q.watchlist.events"
-    }
-
-    @Qualifier("watchlistEventsExchange")
     @Bean
     fun watchlistEventsExchange(): TopicExchange {
-        return TopicExchange(TOPIC_EXCHANGE_NAME)
+        return TopicExchange(amqpProperties.exchange)
     }
 
-    @Qualifier("eventsQueue")
     @Bean
     fun eventsQueue(): Queue {
-        return Queue(QUEUE_NAME, true)
+        return Queue(queue, amqpProperties.isDurableMessages)
     }
 
     @Bean
     fun eventsBinding(
-        @Qualifier("eventsQueue") queue: Queue,
-        @Qualifier("watchlistEventsExchange") exchange: TopicExchange
+        eventsQueue: Queue,
+        watchlistEventsExchange: TopicExchange
     ): Binding {
         return BindingBuilder
-            .bind(queue)
-            .to(exchange)
+            .bind(eventsQueue)
+            .to(watchlistEventsExchange)
             .with("#")
     }
 }

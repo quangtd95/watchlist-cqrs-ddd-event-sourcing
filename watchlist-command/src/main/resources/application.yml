@@ -5,6 +5,8 @@ axoniq:
 axon:
   amqp:
     exchange: ex.watchlist.events
+    durable-messages: true
+    queue: q.watchlist.events
 
 server:
   port: 3030
