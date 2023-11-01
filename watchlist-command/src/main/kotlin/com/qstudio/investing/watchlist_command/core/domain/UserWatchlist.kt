@@ -37,9 +37,7 @@ class UserWatchlist {
 
     @CommandHandler
     fun handle(command: CreateWatchlistCommand): String {
-        if (watchlists.map { it.name }.toSet().contains(command.name)) {
-            throw RuntimeException("Watchlist ${command.name} is already exists")
-        }
+        command.validate()
 
         val newWatchlistId = UUID.randomUUID().toString()
         AggregateLifecycle.apply(WatchlistCreatedEvent().also {
@@ -52,13 +50,7 @@ class UserWatchlist {
 
     @CommandHandler
     fun handle(command: RenameWatchlistCommand) {
-        if (watchlists
-                .filter { it.watchlistId !== command.watchlistId }
-                .map { it.name }
-                .toSet().contains(command.name)
-        ) {
-            throw RuntimeException("Watchlist ${command.name} is already exists")
-        }
+        command.validate()
 
         AggregateLifecycle.apply(WatchlistRenamedEvent().also {
             it.userId = command.userId
@@ -79,5 +71,21 @@ class UserWatchlist {
             it.watchlistId = event.watchlistId
             it.name = event.name
         })
+    }
+
+    private fun CreateWatchlistCommand.validate() {
+        if (watchlists.map { it.name }.toSet().contains(name)) {
+            throw RuntimeException("Watchlist $name is already exists")
+        }
+    }
+
+    private fun RenameWatchlistCommand.validate() {
+        if (watchlists
+                .filter { it.watchlistId !== watchlistId }
+                .map { it.name }
+                .toSet().contains(name)
+        ) {
+            throw RuntimeException("Watchlist $name is already exists")
+        }
     }
 }
