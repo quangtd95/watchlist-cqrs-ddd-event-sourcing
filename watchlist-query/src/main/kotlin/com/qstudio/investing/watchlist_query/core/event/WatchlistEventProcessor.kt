@@ -35,8 +35,8 @@ class WatchlistEventProcessor(
             with(watchlistRenamedEvent) {
                 logger.info("on @EventHandler at query side: WatchlistRenamedEvent")
                 //TODO: validate, push notification if error
-                watchlistViewRepository.getById(this.id)?.let {
-                    it.name = this.newName
+                watchlistViewRepository.getById(this.watchlistId)?.let {
+                    it.name = this.name
                     watchlistViewRepository.save(it)
                 }
             }

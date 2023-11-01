@@ -15,8 +15,9 @@ data class CreateWatchlistCommand(
 
 data class RenameWatchlistCommand(
     @TargetAggregateIdentifier
+    val userId: String,
     val watchlistId: String,
-    val newName: String
+    val name: String
 )
 
 

@@ -9,10 +9,10 @@ class WatchlistCreatedEvent {
     lateinit var userId: String
     lateinit var watchlistId: String
     lateinit var name: String
-
 }
 
 class WatchlistRenamedEvent {
-    lateinit var id: String
-    lateinit var newName: String
+    lateinit var userId: String
+    lateinit var watchlistId: String
+    lateinit var name: String
 }

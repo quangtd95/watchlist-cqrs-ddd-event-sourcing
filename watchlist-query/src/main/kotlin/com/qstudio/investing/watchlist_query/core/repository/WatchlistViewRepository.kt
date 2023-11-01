@@ -8,5 +8,7 @@ interface WatchlistViewRepository {
 
     suspend fun getById(id: String): WatchlistView?
 
-    fun getAll(): Flow<WatchlistView>
+    suspend fun getAll(): List<WatchlistView>
+
+    suspend fun getByUserId(userId: String): List<WatchlistView>
 }

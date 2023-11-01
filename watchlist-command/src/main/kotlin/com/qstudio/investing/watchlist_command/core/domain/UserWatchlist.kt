@@ -46,19 +46,19 @@ class UserWatchlist {
         }
 
         val newWatchlistId = UUID.randomUUID().toString()
-        AggregateLifecycle.apply(WatchlistCreatedEvent().apply {
-            this.userId = this@UserWatchlist.userId
-            this.watchlistId = newWatchlistId
-            this.name = command.name
+        AggregateLifecycle.apply(WatchlistCreatedEvent().also {
+            it.userId = this@UserWatchlist.userId
+            it.watchlistId = newWatchlistId
+            it.name = command.name
         })
         return newWatchlistId
     }
 
     @EventSourcingHandler
     fun on(event: WatchlistCreatedEvent) {
-        watchlists.add(Watchlist().apply {
-            this.watchlistId = event.watchlistId
-            this.name = event.name
+        watchlists.add(Watchlist().also {
+            it.watchlistId = event.watchlistId
+            it.name = event.name
         })
     }
 }

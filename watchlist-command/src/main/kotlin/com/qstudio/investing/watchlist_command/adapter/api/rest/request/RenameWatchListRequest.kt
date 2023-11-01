@@ -6,5 +6,5 @@ import jakarta.validation.constraints.NotNull
 data class RenameWatchListRequest(
     @field:NotNull(message = "newName should not be null")
     @field:NotBlank(message = "newName should not be blank")
-    val newName: String
+    val name: String
 ) : BaseRequest()

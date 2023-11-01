@@ -3,47 +3,33 @@ package com.qstudio.investing.watchlist_query.adapter.inbound.api.rest
 import com.qstudio.investing.watchlist_query.adapter.inbound.api.rest.response.BaseResponse
 import com.qstudio.investing.watchlist_query.adapter.inbound.api.rest.response.GetAllWatchlistResponse
 import com.qstudio.investing.watchlist_query.adapter.inbound.api.rest.response.GetWatchlistResponse
-import com.qstudio.investing.watchlist_query.core.model.WatchlistView
-import com.qstudio.investing.watchlist_query.core.type.WatchlistGetAllQuery
-import com.qstudio.investing.watchlist_query.core.type.WatchlistGetByIdQuery
+import com.qstudio.investing.watchlist_query.core.dispatcher.WatchlistQueryDispatcher
 import jakarta.validation.Valid
-import kotlinx.coroutines.reactor.awaitSingle
-import kotlinx.coroutines.reactor.awaitSingleOrNull
-import org.axonframework.extensions.kotlin.query
-import org.axonframework.extensions.kotlin.queryMany
-import org.axonframework.queryhandling.QueryGateway
 import org.slf4j.LoggerFactory
+import org.springframework.data.repository.query.Param
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import reactor.kotlin.core.publisher.toMono
 
 @RestController
-@RequestMapping("/api/watchlist")
-class WatchlistQueryDispatcher(
-    private val queryGateway: QueryGateway
+@RequestMapping("/api/watchlists")
+class WatchlistController(
+    private val queryDispatcher: WatchlistQueryDispatcher
 ) {
     private val log = LoggerFactory.getLogger(this::class.java)
 
     @GetMapping("/{watchlistId}")
     suspend fun getWatchlist(@Valid @PathVariable watchlistId: String): BaseResponse<GetWatchlistResponse> {
         log.info("querying watchlist: $watchlistId")
-        val watchlist = queryGateway
-            .query<WatchlistView?, WatchlistGetByIdQuery>(WatchlistGetByIdQuery(watchlistId))
-            .toMono()
-            .awaitSingleOrNull()
-
+        val watchlist = queryDispatcher.getWatchlistById(watchlistId)
         return BaseResponse.success(GetWatchlistResponse(watchlist))
     }
 
     @GetMapping
-    suspend fun getAllWatchlist(): BaseResponse<GetAllWatchlistResponse> {
+    suspend fun getAllWatchlist(@Param("userId") userId: String?): BaseResponse<GetAllWatchlistResponse> {
         log.info("querying all watchlist")
-        val watchlists = queryGateway
-            .queryMany<WatchlistView, WatchlistGetAllQuery>(WatchlistGetAllQuery())
-            .toMono()
-            .awaitSingle()
+        val watchlists = queryDispatcher.getAllWatchlistBySpecification(userId)
         return BaseResponse.success(GetAllWatchlistResponse(watchlists))
 
     }

@@ -2,9 +2,8 @@ package com.qstudio.investing.watchlist_query.core.handler
 
 import com.qstudio.investing.watchlist_query.core.model.WatchlistView
 import com.qstudio.investing.watchlist_query.core.repository.WatchlistViewRepository
-import com.qstudio.investing.watchlist_query.core.type.WatchlistGetAllQuery
 import com.qstudio.investing.watchlist_query.core.type.WatchlistGetByIdQuery
-import kotlinx.coroutines.flow.toList
+import com.qstudio.investing.watchlist_query.core.type.WatchlistSearchQuery
 import kotlinx.coroutines.runBlocking
 import org.axonframework.queryhandling.QueryHandler
 import org.springframework.stereotype.Component
@@ -15,20 +14,26 @@ class WatchlistQueryHandler(
 ) {
 
     @QueryHandler
-    fun handle(watchlistGetByIdQuery: WatchlistGetByIdQuery): WatchlistView? {
+    fun handle(query: WatchlistGetByIdQuery): WatchlistView? {
         var watchlistView: WatchlistView?
         runBlocking {
-            watchlistView = watchlistViewRepository.getById(watchlistGetByIdQuery.watchlistId)
+            watchlistView = watchlistViewRepository.getById(query.watchlistId)
         }
         return watchlistView
     }
 
+
     @QueryHandler
-    fun handle(watchlistGetAllQuery: WatchlistGetAllQuery): List<WatchlistView> {
+    fun handle(query: WatchlistSearchQuery): List<WatchlistView> {
         var list: List<WatchlistView>
         runBlocking {
-            list = watchlistViewRepository.getAll().toList()
+            list = if (query.userId != null) {
+                watchlistViewRepository.getByUserId(query.userId)
+            } else {
+                watchlistViewRepository.getAll()
+            }
         }
         return list
     }
+
 }
