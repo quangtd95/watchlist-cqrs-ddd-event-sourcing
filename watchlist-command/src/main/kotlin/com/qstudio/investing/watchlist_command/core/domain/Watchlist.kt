@@ -9,6 +9,7 @@ class Watchlist {
     @EntityId
     lateinit var watchlistId: String
     lateinit var name: String
+    lateinit var stocks: MutableList<Stock>
 
     @EventSourcingHandler
     fun on(event: WatchlistRenamedEvent) {

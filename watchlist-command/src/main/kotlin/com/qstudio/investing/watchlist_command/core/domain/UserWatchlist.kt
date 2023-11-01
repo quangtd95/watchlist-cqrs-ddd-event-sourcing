@@ -70,6 +70,7 @@ class UserWatchlist {
         watchlists.add(Watchlist().also {
             it.watchlistId = event.watchlistId
             it.name = event.name
+            it.stocks = mutableListOf()
         })
     }
 

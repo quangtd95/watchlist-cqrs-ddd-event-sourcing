@@ -10,6 +10,9 @@ axon:
       watchlistEvents:
         source: amqpMessageSource
         mode: subscribing
+      stockEvents:
+        source: amqpMessageSource
+        mode: subscribing
 
 server:
   port: 3031
