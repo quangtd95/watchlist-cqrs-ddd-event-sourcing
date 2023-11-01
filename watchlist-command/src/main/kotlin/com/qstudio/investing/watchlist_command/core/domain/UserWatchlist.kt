@@ -2,8 +2,10 @@ package com.qstudio.investing.watchlist_command.core.domain
 
 import com.qstudio.investing.watchlist_command.core.type.CreateUserWatchlistCommand
 import com.qstudio.investing.watchlist_command.core.type.CreateWatchlistCommand
+import com.qstudio.investing.watchlist_command.core.type.RenameWatchlistCommand
 import com.qstudio.investing.watchlist_shared_kernel.event.type.UserWatchlistCreatedEvent
 import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistCreatedEvent
+import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistRenamedEvent
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier
@@ -33,16 +35,10 @@ class UserWatchlist {
         AggregateLifecycle.apply(event)
     }
 
-    @EventSourcingHandler
-    fun on(event: UserWatchlistCreatedEvent) {
-        this.userId = event.userId
-        watchlists = mutableListOf()
-    }
-
     @CommandHandler
     fun handle(command: CreateWatchlistCommand): String {
         if (watchlists.map { it.name }.toSet().contains(command.name)) {
-            throw RuntimeException("Watchlist is already exists")
+            throw RuntimeException("Watchlist ${command.name} is already exists")
         }
 
         val newWatchlistId = UUID.randomUUID().toString()
@@ -52,6 +48,29 @@ class UserWatchlist {
             it.name = command.name
         })
         return newWatchlistId
+    }
+
+    @CommandHandler
+    fun handle(command: RenameWatchlistCommand) {
+        if (watchlists
+                .filter { it.watchlistId !== command.watchlistId }
+                .map { it.name }
+                .toSet().contains(command.name)
+        ) {
+            throw RuntimeException("Watchlist ${command.name} is already exists")
+        }
+
+        AggregateLifecycle.apply(WatchlistRenamedEvent().also {
+            it.userId = command.userId
+            it.watchlistId = command.watchlistId
+            it.name = command.name
+        })
+    }
+
+    @EventSourcingHandler
+    fun on(event: UserWatchlistCreatedEvent) {
+        this.userId = event.userId
+        watchlists = mutableListOf()
     }
 
     @EventSourcingHandler

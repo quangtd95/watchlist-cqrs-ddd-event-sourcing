@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service
 import reactor.kotlin.core.publisher.toMono
 
 @Service
-class WatchlistCommandDispatcher(private val commandGateway: CommandGateway) : WatchlistCommandUseCase {
+class WatchlistCommandDispatcher(
+    private val commandGateway: CommandGateway,
+) : WatchlistCommandUseCase {
+
     override suspend fun createUserWatchlist(userId: String): String {
         val command = CreateUserWatchlistCommand(userId)
         return commandGateway.send<String>(command).toMono().awaitSingle()
