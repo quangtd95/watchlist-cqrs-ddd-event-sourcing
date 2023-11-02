@@ -1,5 +1,4 @@
 import com.qstudio.investing.*
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("application-conventions")
@@ -26,10 +25,7 @@ dependencies {
     implementation("org.apache.commons:commons-dbcp2:$COMMONS_DBCP2_VERSION")
 
     //swagger
-    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0")
-
-    //amqp
-    implementation("org.springframework.boot:spring-boot-starter-amqp:$SPRING_BOOT_VERSION")
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:$SPRINGDOC_OPENAPI_STARTER_WEBFLUX_UI")
 
     implementation(project(":watchlist-shared-kernel"))
 

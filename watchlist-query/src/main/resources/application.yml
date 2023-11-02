@@ -20,6 +20,9 @@ logging:
   level:
     web: info
 
+app:
+  messageBus:
+    type: amqp
 
 spring:
   r2dbc:

@@ -1,4 +1,7 @@
-import com.qstudio.investing.*
+import com.qstudio.investing.COMMONS_DBCP2_VERSION
+import com.qstudio.investing.JDBC_POSTGRES_VERSION
+import com.qstudio.investing.SPRINGDOC_OPENAPI_STARTER_WEBFLUX_UI
+import com.qstudio.investing.SPRING_BOOT_VERSION
 
 plugins {
     id("application-conventions")
@@ -20,12 +23,8 @@ dependencies {
     //swagger
     implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:$SPRINGDOC_OPENAPI_STARTER_WEBFLUX_UI")
 
-    //amqp
-    implementation("org.springframework.boot:spring-boot-starter-amqp:$SPRING_BOOT_VERSION")
-
     implementation(project(":watchlist-shared-kernel"))
 }
-
 
 application {
     // Define the main class for the application.

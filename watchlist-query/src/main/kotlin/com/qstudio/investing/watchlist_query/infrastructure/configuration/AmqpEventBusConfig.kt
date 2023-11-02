@@ -5,10 +5,12 @@ import org.axonframework.extensions.amqp.eventhandling.AMQPMessageConverter
 import org.axonframework.extensions.amqp.eventhandling.spring.SpringAMQPMessageSource
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
+@ConditionalOnProperty(prefix = "app.messageBus", name = ["type"], havingValue = "amqp", matchIfMissing = false)
 class AmqpEventBusConfig {
 
     @Bean
