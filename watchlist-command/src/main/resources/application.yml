@@ -2,12 +2,6 @@ axoniq:
   console:
     credentials: 5fd32c85-0:bf1b0c38f851447fad1951aa3ceb12fc
 
-axon:
-  amqp:
-    exchange: ex.watchlist.events
-    durable-messages: true
-    queue: q.watchlist.events
-
 server:
   port: 3030
 logging:
@@ -16,9 +10,11 @@ logging:
 
 app:
   messageBus:
-    type: amqp
+    type: axon
 
 spring:
+  profiles:
+    active: ${app.messageBus.type}
   datasource:
     dbcp2:
       username: postgres

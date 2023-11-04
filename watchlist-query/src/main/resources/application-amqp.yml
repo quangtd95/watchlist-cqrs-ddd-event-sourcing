@@ -1,0 +1,11 @@
+axon:
+  amqp:
+    queue: q.watchlist.events
+  eventhandling:
+    processors:
+      watchlistEvents:
+        source: amqpMessageSource
+        mode: subscribing
+      stockEvents:
+        source: amqpMessageSource
+        mode: subscribing

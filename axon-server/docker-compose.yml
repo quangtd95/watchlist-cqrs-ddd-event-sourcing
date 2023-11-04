@@ -1,15 +1,15 @@
 services:
-#  axon-server:
-#    image: axoniq/axonserver:4.6.11
-#    ports:
-#      - 8024:8024
-#      - 8124:8124
-
-  rabbitmq:
-    image: rabbitmq:management
+  axon-server:
+    image: axoniq/axonserver:2023.2.0-jdk-17
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - 8024:8024
+      - 8124:8124
+
+#  rabbitmq:
+#    image: rabbitmq:management
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"
 
   watchlist-view-db:
     image: postgres:14

@@ -2,17 +2,6 @@ axoniq:
   console:
     credentials: 5fd32c85-0:bf1b0c38f851447fad1951aa3ceb12fc
 
-axon:
-  amqp:
-    queue: q.watchlist.events
-  eventhandling:
-    processors:
-      watchlistEvents:
-        source: amqpMessageSource
-        mode: subscribing
-      stockEvents:
-        source: amqpMessageSource
-        mode: subscribing
 
 server:
   port: 3031
@@ -22,9 +11,11 @@ logging:
 
 app:
   messageBus:
-    type: amqp
+    type: axon
 
 spring:
+  profiles:
+    active: ${app.messageBus.type}
   r2dbc:
     username: postgres
     password: mhsatuck

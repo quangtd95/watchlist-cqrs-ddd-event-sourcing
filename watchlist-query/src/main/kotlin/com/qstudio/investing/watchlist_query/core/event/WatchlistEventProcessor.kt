@@ -2,6 +2,7 @@ package com.qstudio.investing.watchlist_query.core.event
 
 import com.qstudio.investing.watchlist_query.core.model.WatchlistView
 import com.qstudio.investing.watchlist_query.core.repository.WatchlistViewRepository
+import com.qstudio.investing.watchlist_shared_kernel.event.type.UserWatchlistCreatedEvent
 import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistCreatedEvent
 import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistRenamedEvent
 import kotlinx.coroutines.runBlocking
@@ -17,6 +18,10 @@ class WatchlistEventProcessor(
 ) {
     private final val logger = LoggerFactory.getLogger(WatchlistEventProcessor::class.java)
 
+    @EventHandler
+    fun on(event: UserWatchlistCreatedEvent) {
+        logger.info("new user joined: ${event.userId}")
+    }
 
     @EventHandler
     fun on(watchlistCreatedEvent: WatchlistCreatedEvent) {

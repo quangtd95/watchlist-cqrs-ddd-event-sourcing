@@ -1,6 +1,5 @@
 package com.qstudio.investing.watchlist_command.infrastructure.configuration
 
-import com.thoughtworks.xstream.XStream
 import org.axonframework.common.jdbc.ConnectionProvider
 import org.axonframework.common.transaction.TransactionManager
 import org.axonframework.eventsourcing.eventstore.EmbeddedEventStore
@@ -17,11 +16,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import javax.sql.DataSource
 
-
-@Configuration
-class AxonCommandConfig {
-
-
+//@Configuration
+class JdbcEventStoreConfig {
     @Bean
     fun eventStore(storageEngine: EventStorageEngine): EventStore {
         return EmbeddedEventStore.builder()
@@ -43,11 +39,6 @@ class AxonCommandConfig {
 
         storageEngine.createSchema(PostgresEventTableFactory.INSTANCE)
         return storageEngine
-    }
-
-    @Bean
-    fun xStream() = XStream().apply {
-        allowTypesByWildcard(arrayOf("com.qstudio.**"))
     }
 
     @Qualifier("axonDataSource")
