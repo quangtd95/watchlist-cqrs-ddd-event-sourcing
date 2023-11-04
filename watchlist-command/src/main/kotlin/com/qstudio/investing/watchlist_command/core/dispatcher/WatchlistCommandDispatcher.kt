@@ -1,5 +1,6 @@
 package com.qstudio.investing.watchlist_command.core.dispatcher
 
+import com.qstudio.investing.watchlist_command.core.type.AddStockToWatchlistCommand
 import com.qstudio.investing.watchlist_command.core.type.CreateUserWatchlistCommand
 import com.qstudio.investing.watchlist_command.core.type.CreateWatchlistCommand
 import com.qstudio.investing.watchlist_command.core.type.RenameWatchlistCommand
@@ -27,6 +28,14 @@ class WatchlistCommandDispatcher(
 
     override suspend fun renameWatchlist(userId: String, watchlistId: String, name: String) {
         val command = RenameWatchlistCommand(userId, watchlistId, name)
+        commandGateway
+            .send<Any?>(command)
+            .toMono()
+            .awaitSingleOrNull()
+    }
+
+    override suspend fun addStockToWatchlist(userId: String, watchlistId: String, symbol: String) {
+        val command = AddStockToWatchlistCommand(userId, watchlistId, symbol)
         commandGateway
             .send<Any?>(command)
             .toMono()

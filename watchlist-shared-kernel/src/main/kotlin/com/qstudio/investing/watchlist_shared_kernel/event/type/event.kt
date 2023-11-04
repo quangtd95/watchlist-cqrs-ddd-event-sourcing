@@ -17,6 +17,12 @@ class WatchlistRenamedEvent {
     lateinit var name: String
 }
 
+class WatchlistStockAddedEvent {
+    lateinit var userId: String
+    lateinit var watchlistId: String
+    lateinit var symbol: String
+}
+
 class StockCreatedEvent {
     lateinit var symbol: String
     lateinit var name: String

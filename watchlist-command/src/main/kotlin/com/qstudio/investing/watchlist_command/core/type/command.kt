@@ -20,6 +20,13 @@ data class RenameWatchlistCommand(
     val name: String
 )
 
+data class AddStockToWatchlistCommand(
+    @TargetAggregateIdentifier
+    val userId: String,
+    val watchlistId: String,
+    val symbol: String
+)
+
 data class CreateStockCommand(
     @TargetAggregateIdentifier
     val symbol: String,

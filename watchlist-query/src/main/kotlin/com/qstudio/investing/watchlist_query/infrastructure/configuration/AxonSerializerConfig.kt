@@ -20,8 +20,8 @@ class AxonSerializerConfig {
 //                return serializedType.name
 //            }
 //
-//            override fun typeForClass(type: Class<*>?): SerializedType {
-//                return super.typeForClass(type)
+//            override fun typeForClass(type.kt: Class<*>?): SerializedType {
+//                return super.typeForClass(type.kt)
 //            }
 //        }
 //    }

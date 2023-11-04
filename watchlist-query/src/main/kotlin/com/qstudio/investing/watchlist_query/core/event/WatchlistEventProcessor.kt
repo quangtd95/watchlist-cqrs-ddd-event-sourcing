@@ -5,6 +5,7 @@ import com.qstudio.investing.watchlist_query.core.repository.WatchlistViewReposi
 import com.qstudio.investing.watchlist_shared_kernel.event.type.UserWatchlistCreatedEvent
 import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistCreatedEvent
 import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistRenamedEvent
+import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistStockAddedEvent
 import kotlinx.coroutines.runBlocking
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
@@ -24,10 +25,10 @@ class WatchlistEventProcessor(
     }
 
     @EventHandler
-    fun on(watchlistCreatedEvent: WatchlistCreatedEvent) {
+    fun on(event: WatchlistCreatedEvent) {
         runBlocking {
-            with(watchlistCreatedEvent) {
-                logger.info("on @EventHandler at query side: WatchlistCreatedEvent")
+            with(event) {
+                logger.info("on @EventHandler at query side: ${event.javaClass.simpleName}")
                 watchlistViewRepository.save(WatchlistView(this.watchlistId, this.userId, this.name))
             }
 
@@ -35,16 +36,24 @@ class WatchlistEventProcessor(
     }
 
     @EventHandler
-    fun on(watchlistRenamedEvent: WatchlistRenamedEvent) {
+    fun on(event: WatchlistRenamedEvent) {
         runBlocking {
-            with(watchlistRenamedEvent) {
-                logger.info("on @EventHandler at query side: WatchlistRenamedEvent")
+            with(event) {
+                logger.info("on @EventHandler at query side: ${event.javaClass.simpleName}")
                 //TODO: validate, push notification if error
                 watchlistViewRepository.getById(this.watchlistId)?.let {
                     it.name = this.name
                     watchlistViewRepository.save(it)
                 }
             }
+        }
+    }
+
+    @EventHandler
+    fun on(event: WatchlistStockAddedEvent) {
+        runBlocking {
+            logger.info("on @EventHandler at query side: ${event.javaClass.simpleName}")
+            watchlistViewRepository.addSymbolToWatchlist(event.watchlistId, event.symbol)
         }
     }
 }

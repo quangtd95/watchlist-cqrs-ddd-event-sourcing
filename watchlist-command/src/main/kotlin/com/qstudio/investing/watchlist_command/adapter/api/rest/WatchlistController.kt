@@ -48,4 +48,15 @@ class WatchlistController(
         watchlistCommandDispatcher.renameWatchlist(userId, watchlistId, request.name)
         return BaseResponse.success(mapOf("result" to "rename request accepted"))
     }
+
+    @PostMapping("/watchlists/{watchlistId}/stocks/{symbol}")
+    suspend fun addStockToWatchlist(
+        @Valid @PathVariable userId: String,
+        @Valid @PathVariable @NotNull @NotBlank watchlistId: String,
+        @Valid @PathVariable @NotNull @NotBlank symbol: String,
+    ): BaseResponse<Map<String, String>> {
+        log.info("add stock $symbol to watchlist: $watchlistId")
+        watchlistCommandDispatcher.addStockToWatchlist(userId, watchlistId, symbol)
+        return BaseResponse.success(mapOf("result" to "add stock accepted"))
+    }
 }

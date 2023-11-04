@@ -12,4 +12,5 @@
     <include file="v1/05_rename_audit_field.sql" relativeToChangelogFile="true"/>
     <include file="v1/06_create_stock_table.sql" relativeToChangelogFile="true"/>
     <include file="v1/07_add_version_to_stock_table.sql" relativeToChangelogFile="true"/>
+    <include file="v1/08_create_watchlist_stock_table.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

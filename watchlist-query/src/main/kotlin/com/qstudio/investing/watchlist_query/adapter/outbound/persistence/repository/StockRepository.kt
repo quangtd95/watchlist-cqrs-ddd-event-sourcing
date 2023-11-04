@@ -7,10 +7,6 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface StockRepository : CoroutineCrudRepository<Stock, String> {
-}
-
-@Repository
 class ReactiveStockRepositoryAdapter(private val repo: StockRepository) : StockViewRepository {
     override suspend fun save(stockView: StockView) {
         if (repo.existsById(stockView.symbol)) {
