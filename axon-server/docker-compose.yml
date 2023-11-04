@@ -1,15 +1,23 @@
+version: '3.3'
 services:
   axon-server:
     image: axoniq/axonserver:2023.2.0-jdk-17
     ports:
       - 8024:8024
       - 8124:8124
+    volumes:
+      - ./axonserver-data:/axonserver/data
+      - ./axonserver-events:/axonserver/events
+      - ./axonserver-log:/axonserver/log
+      - ./axonserver-config:/axonserver/config
+      - ./axonserver-exts:/axonserver/exts
+      - ./axonserver-plugins:/axonserver/plugins
 
-#  rabbitmq:
-#    image: rabbitmq:management
-#    ports:
-#      - "5672:5672"
-#      - "15672:15672"
+  #  rabbitmq:
+  #    image: rabbitmq:management
+  #    ports:
+  #      - "5672:5672"
+  #      - "15672:15672"
 
   watchlist-view-db:
     image: postgres:14

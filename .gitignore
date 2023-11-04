@@ -6,3 +6,9 @@ build
 
 .idea
 /.idea/
+/axon-server/axonserver-config/
+/axon-server/axonserver-data/
+/axon-server/axonserver-events/
+/axon-server/axonserver-exts/
+/axon-server/axonserver-log/
+/axon-server/axonserver-plugins/
