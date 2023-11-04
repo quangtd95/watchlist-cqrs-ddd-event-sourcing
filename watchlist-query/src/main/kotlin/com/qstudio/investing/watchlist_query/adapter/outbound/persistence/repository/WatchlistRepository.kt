@@ -4,6 +4,8 @@ import com.qstudio.investing.watchlist_query.adapter.outbound.persistence.entity
 import com.qstudio.investing.watchlist_query.adapter.outbound.persistence.entity.WatchlistStock
 import com.qstudio.investing.watchlist_query.core.model.WatchlistView
 import com.qstudio.investing.watchlist_query.core.repository.WatchlistViewRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
@@ -35,27 +37,44 @@ class ReactiveWatchlistRepositoryAdapter(
     }
 
 
-    override suspend fun getById(id: String): WatchlistView? {
-        val stocks = watchlistStockTable.findAllByWatchlistId(id)
-            .map { it.symbol }
-            .toSet()
-        return watchlistTable.findById(id)
-            ?.let { WatchlistView(it.id, it.userId, it.name, stocks, it.createdDate, it.lastModifiedDate) }
+    override suspend fun getById(id: String): WatchlistView? = coroutineScope {
+        val watchlist = async {
+            watchlistTable.findById(id)
+        }
+        val stocks = async {
+            watchlistStockTable.findAllByWatchlistId(id)
+        }
+        watchlist.await()
+            ?.let {
+                WatchlistView(
+                    it.id,
+                    it.userId,
+                    it.name,
+                    stocks.await().map { ws -> ws.symbol }.toSet(),
+                    it.createdDate,
+                    it.lastModifiedDate
+                )
+            }
     }
 
-    override suspend fun getAll(): List<WatchlistView> {
-        val watchlistStocks = watchlistStockTable.findAll()
-            .toList()
-            .groupBy { it.watchlistId }
-            .mapValues { pair -> pair.value.map { it.symbol }.toSet() }
-        return watchlistTable
-            .findAll()
+    override suspend fun getAll(): List<WatchlistView> = coroutineScope {
+        val watchlistStocks = async {
+            watchlistStockTable.findAll()
+                .toList()
+                .groupBy { it.watchlistId }
+                .mapValues { pair -> pair.value.map { it.symbol }.toSet() }
+        }
+        val watchlists = async {
+            watchlistTable.findAll()
+        }
+        val ws = watchlistStocks.await()
+        watchlists.await()
             .map {
                 WatchlistView(
                     it.id,
                     it.userId,
                     it.name,
-                    watchlistStocks[it.id],
+                    ws[it.id],
                     it.createdDate,
                     it.lastModifiedDate
                 )
