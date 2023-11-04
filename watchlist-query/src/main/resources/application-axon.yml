@@ -4,8 +4,8 @@ spring:
 
 axon:
   serializer:
-    general: jackson
-    messages: jackson
+    general: xstream
+    messages: xstream
     events: jackson
   axonserver:
     context: investing

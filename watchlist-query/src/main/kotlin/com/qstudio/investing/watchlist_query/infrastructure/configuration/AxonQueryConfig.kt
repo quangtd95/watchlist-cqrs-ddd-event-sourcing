@@ -31,11 +31,6 @@ class AxonQueryConfig {
         return jdbcTokenStore
     }
 
-    @Bean
-    fun xStream() = XStream().apply {
-        allowTypesByWildcard(arrayOf("com.qstudio.**"))
-    }
-
     @Qualifier("axonDataSource")
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource.dbcp2")

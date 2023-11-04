@@ -1,4 +1,4 @@
-package com.qstudio.investing.watchlist_command.infrastructure.configuration
+package com.qstudio.investing.watchlist_query.infrastructure.configuration
 
 import com.thoughtworks.xstream.XStream
 import org.springframework.context.annotation.Bean

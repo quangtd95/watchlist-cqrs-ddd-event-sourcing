@@ -25,15 +25,13 @@ class WatchlistQueryHandler(
 
     @QueryHandler
     fun handle(query: WatchlistSearchQuery): List<WatchlistView> {
-        var list: List<WatchlistView>
-        runBlocking {
-            list = if (query.userId != null) {
+        return runBlocking {
+            if (query.userId != null) {
                 watchlistViewRepository.getByUserId(query.userId)
             } else {
                 watchlistViewRepository.getAll()
             }
         }
-        return list
     }
 
 }
