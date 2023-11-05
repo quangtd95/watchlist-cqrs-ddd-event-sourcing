@@ -20,4 +20,5 @@ interface WatchlistRepository : CoroutineCrudRepository<Watchlist, String> {
 interface WatchlistStockRepository : CoroutineCrudRepository<WatchlistStock, String> {
     fun existsByWatchlistIdAndSymbol(watchlistId: String, symbol: String): Mono<Boolean>
     fun findAllByWatchlistId(watchlistId: String): Flow<WatchlistStock>
+    fun findAllByWatchlistIdIsIn(watchlistIdList: List<String>): Flow<WatchlistStock>
 }

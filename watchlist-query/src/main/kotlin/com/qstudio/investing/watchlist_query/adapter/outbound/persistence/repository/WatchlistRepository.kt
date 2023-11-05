@@ -82,15 +82,29 @@ class ReactiveWatchlistRepositoryAdapter(
             .toList()
     }
 
-    override suspend fun getByUserId(userId: String): List<WatchlistView> {
-        return watchlistTable
-            .findAllByUserId(userId)
+    override suspend fun getByUserId(userId: String): List<WatchlistView> = coroutineScope {
+        val watchlistsByUserId = async {
+            watchlistTable
+                .findAllByUserId(userId)
+        }
+        val watchlistStocks = async {
+            watchlistStockTable
+                .findAllByWatchlistIdIsIn(watchlistsByUserId.await().map { it.id }.toList())
+                .toList()
+                .groupBy { it.watchlistId }
+                .mapValues { pair -> pair.value.map { it.symbol }.toSet() }
+        }
+        watchlistsByUserId
+            .await()
             .map {
-                WatchlistView(it.id, it.userId, it.name,
-                    watchlistStockTable.findAllByWatchlistId(it.id)
-                        .map { ws -> ws.symbol }
-                        .toSet(),
-                    it.createdDate, it.lastModifiedDate)
+                WatchlistView(
+                    it.id,
+                    it.userId,
+                    it.name,
+                    watchlistStocks.await()[it.id],
+                    it.createdDate,
+                    it.lastModifiedDate
+                )
             }
             .toList()
     }
