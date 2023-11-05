@@ -1,6 +1,9 @@
 package com.qstudio.investing.watchlist_query.core.dispatcher
 
+import com.qstudio.investing.watchlist_query.core.model.StockView
 import com.qstudio.investing.watchlist_query.core.model.WatchlistView
+import com.qstudio.investing.watchlist_query.core.type.StockGetBySymbolQuery
+import com.qstudio.investing.watchlist_query.core.type.StocksGetQuery
 import com.qstudio.investing.watchlist_query.core.type.WatchlistGetByIdQuery
 import com.qstudio.investing.watchlist_query.core.type.WatchlistSearchQuery
 import com.qstudio.investing.watchlist_query.core.usecase.WatchlistQueryUseCase
@@ -27,6 +30,20 @@ class WatchlistQueryDispatcher(
     override suspend fun getAllWatchlistBySpecification(userId: String?): List<WatchlistView> {
         return queryGateway
             .queryMany<WatchlistView, WatchlistSearchQuery>(WatchlistSearchQuery(userId))
+            .toMono()
+            .awaitSingle()
+    }
+
+    override suspend fun getStockBySymbol(symbol: String): StockView? {
+        return queryGateway
+            .query<StockView?, StockGetBySymbolQuery>(StockGetBySymbolQuery(symbol))
+            .toMono()
+            .awaitSingleOrNull()
+    }
+
+    override suspend fun getStocks(): List<StockView> {
+        return queryGateway
+            .queryMany<StockView, StocksGetQuery>(StocksGetQuery())
             .toMono()
             .awaitSingle()
     }

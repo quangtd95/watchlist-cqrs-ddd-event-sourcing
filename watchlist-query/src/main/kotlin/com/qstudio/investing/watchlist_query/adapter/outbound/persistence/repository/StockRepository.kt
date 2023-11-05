@@ -3,7 +3,8 @@ package com.qstudio.investing.watchlist_query.adapter.outbound.persistence.repos
 import com.qstudio.investing.watchlist_query.adapter.outbound.persistence.entity.Stock
 import com.qstudio.investing.watchlist_query.core.model.StockView
 import com.qstudio.investing.watchlist_query.core.repository.StockViewRepository
-import org.springframework.data.repository.kotlin.CoroutineCrudRepository
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -22,5 +23,17 @@ class ReactiveStockRepositoryAdapter(private val repo: StockRepository) : StockV
                 it.name = stockView.name
             })
         }
+    }
+
+    override suspend fun getBySymbol(symbol: String): StockView? {
+        return repo.findById(symbol)?.let {
+            StockView(it.symbol, it.name, it.createdDate, it.lastModifiedDate)
+        }
+    }
+
+    override suspend fun getAll(): List<StockView> {
+        return repo.findAll()
+            .map { StockView(it.symbol, it.name, it.createdDate, it.lastModifiedDate) }
+            .toList()
     }
 }
