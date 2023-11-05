@@ -1,8 +1,9 @@
-package com.qstudio.investing.watchlist_command.core.domain
+package com.qstudio.investing.watchlist_command.core.domain.watchlist
 
 import com.qstudio.investing.watchlist_command.core.type.CreateUserWatchlistCommand
 import com.qstudio.investing.watchlist_command.core.type.CreateWatchlistCommand
 import com.qstudio.investing.watchlist_command.core.type.RenameWatchlistCommand
+import com.qstudio.investing.watchlist_command.infrastructure.type.AggregateRoot
 import com.qstudio.investing.watchlist_shared_kernel.event.type.UserWatchlistCreatedEvent
 import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistCreatedEvent
 import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistRenamedEvent
@@ -16,7 +17,7 @@ import org.slf4j.LoggerFactory
 import java.util.*
 
 @Aggregate
-class UserWatchlist {
+class UserWatchlist : AggregateRoot {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @AggregateIdentifier
@@ -81,11 +82,7 @@ class UserWatchlist {
     }
 
     private fun RenameWatchlistCommand.validate() {
-        if (watchlists
-                .filter { it.watchlistId !== watchlistId }
-                .map { it.name }
-                .toSet().contains(name)
-        ) {
+        if (watchlists.filter { it.watchlistId !== watchlistId }.map { it.name }.toSet().contains(name)) {
             throw RuntimeException("Watchlist $name is already exists")
         }
     }

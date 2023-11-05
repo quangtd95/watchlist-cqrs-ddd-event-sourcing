@@ -1,6 +1,7 @@
-package com.qstudio.investing.watchlist_command.core.domain
+package com.qstudio.investing.watchlist_command.core.domain.watchlist
 
 import com.qstudio.investing.watchlist_command.core.type.AddStockToWatchlistCommand
+import com.qstudio.investing.watchlist_command.infrastructure.type.Entity
 import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistRenamedEvent
 import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistStockAddedEvent
 import org.axonframework.commandhandling.CommandHandler
@@ -8,12 +9,12 @@ import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.modelling.command.EntityId
 
-class Watchlist {
+class Watchlist : Entity {
 
     @EntityId
     lateinit var watchlistId: String
     lateinit var name: String
-    lateinit var stocks: MutableSet<String>
+    lateinit var stocks: MutableSet<WatchlistStock>
 
     @EventSourcingHandler
     fun on(event: WatchlistRenamedEvent) {
@@ -22,7 +23,7 @@ class Watchlist {
 
     @CommandHandler
     fun handle(command: AddStockToWatchlistCommand) {
-        if (!stocks.contains(command.symbol)) {
+        if (!stocks.map { it.symbol }.contains(command.symbol)) {
             AggregateLifecycle.apply(WatchlistStockAddedEvent().also {
                 it.userId = command.userId
                 it.watchlistId = command.watchlistId
@@ -34,6 +35,6 @@ class Watchlist {
 
     @EventSourcingHandler
     fun on(event: WatchlistStockAddedEvent) {
-        stocks.add(event.symbol)
+        stocks.add(WatchlistStock(event.symbol))
     }
 }
