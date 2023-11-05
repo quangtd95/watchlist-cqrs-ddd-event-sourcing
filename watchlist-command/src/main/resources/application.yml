@@ -11,6 +11,9 @@ logging:
 app:
   messageBus:
     type: axon
+  stock:
+    api:
+      endpoint: http://localhost:3031
 
 spring:
   profiles:
