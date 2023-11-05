@@ -8,4 +8,6 @@ interface WatchlistCommandUseCase {
     suspend fun renameWatchlist(userId: String, watchlistId: String, name: String)
 
     suspend fun addStockToWatchlist(userId: String, watchlistId: String, symbol: String)
+
+    suspend fun removeStockFromWatchlist(userId: String, watchlistId: String, symbol: String)
 }

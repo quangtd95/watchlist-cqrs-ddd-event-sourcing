@@ -1,9 +1,6 @@
 package com.qstudio.investing.watchlist_command.core.dispatcher
 
-import com.qstudio.investing.watchlist_command.core.type.AddStockToWatchlistCommand
-import com.qstudio.investing.watchlist_command.core.type.CreateUserWatchlistCommand
-import com.qstudio.investing.watchlist_command.core.type.CreateWatchlistCommand
-import com.qstudio.investing.watchlist_command.core.type.RenameWatchlistCommand
+import com.qstudio.investing.watchlist_command.core.type.*
 import com.qstudio.investing.watchlist_command.core.usecase.WatchlistCommandUseCase
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
@@ -36,6 +33,14 @@ class WatchlistCommandDispatcher(
 
     override suspend fun addStockToWatchlist(userId: String, watchlistId: String, symbol: String) {
         val command = AddStockToWatchlistCommand(userId, watchlistId, symbol)
+        commandGateway
+            .send<Any?>(command)
+            .toMono()
+            .awaitSingleOrNull()
+    }
+
+    override suspend fun removeStockFromWatchlist(userId: String, watchlistId: String, symbol: String) {
+        val command = RemoveStockFromWatchlistCommand(userId, watchlistId, symbol)
         commandGateway
             .send<Any?>(command)
             .toMono()

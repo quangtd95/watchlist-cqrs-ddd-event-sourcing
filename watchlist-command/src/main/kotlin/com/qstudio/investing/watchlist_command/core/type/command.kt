@@ -27,6 +27,13 @@ data class AddStockToWatchlistCommand(
     val symbol: String
 )
 
+data class RemoveStockFromWatchlistCommand(
+    @TargetAggregateIdentifier
+    val userId: String,
+    val watchlistId: String,
+    val symbol: String
+)
+
 data class CreateStockCommand(
     @TargetAggregateIdentifier
     val symbol: String,

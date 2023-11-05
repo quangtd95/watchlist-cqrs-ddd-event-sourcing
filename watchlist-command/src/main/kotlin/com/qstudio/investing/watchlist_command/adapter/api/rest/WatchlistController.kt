@@ -59,4 +59,17 @@ class WatchlistController(
         watchlistCommandDispatcher.addStockToWatchlist(userId, watchlistId, symbol)
         return BaseResponse.success(mapOf("result" to "add stock accepted"))
     }
+
+
+    @DeleteMapping("/watchlists/{watchlistId}/stocks/{symbol}")
+    suspend fun removeStockFromWatchlist(
+        @Valid @PathVariable userId: String,
+        @Valid @PathVariable @NotNull @NotBlank watchlistId: String,
+        @Valid @PathVariable @NotNull @NotBlank symbol: String,
+    ): BaseResponse<Map<String, String>> {
+        log.info("remove stock $symbol from watchlist: $watchlistId")
+        watchlistCommandDispatcher.removeStockFromWatchlist(userId, watchlistId, symbol)
+        return BaseResponse.success(mapOf("result" to "remove stock accepted"))
+    }
+
 }

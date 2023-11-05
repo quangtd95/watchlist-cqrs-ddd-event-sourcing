@@ -8,8 +8,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.flow.toSet
-import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.stereotype.Repository
 import java.util.*
 
@@ -110,12 +108,18 @@ class ReactiveWatchlistRepositoryAdapter(
     }
 
     override suspend fun addSymbolToWatchlist(watchlistId: String, symbol: String) {
-        if (!watchlistStockTable.existsByWatchlistIdAndSymbol(watchlistId, symbol).awaitSingle()) {
+        if (!watchlistStockTable.existsByWatchlistIdAndSymbol(watchlistId, symbol)) {
             watchlistStockTable.save(WatchlistStock().also {
                 it.id = UUID.randomUUID().toString()
                 it.watchlistId = watchlistId
                 it.symbol = symbol
             })
+        }
+    }
+
+    override suspend fun removeSymbolFromWatchlist(watchlistId: String, symbol: String) {
+        if (watchlistStockTable.existsByWatchlistIdAndSymbol(watchlistId, symbol)) {
+            watchlistStockTable.deleteAllByWatchlistIdAndSymbol(watchlistId, symbol)
         }
     }
 

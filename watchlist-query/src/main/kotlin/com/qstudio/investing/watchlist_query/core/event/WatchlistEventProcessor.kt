@@ -2,10 +2,7 @@ package com.qstudio.investing.watchlist_query.core.event
 
 import com.qstudio.investing.watchlist_query.core.model.WatchlistView
 import com.qstudio.investing.watchlist_query.core.repository.WatchlistViewRepository
-import com.qstudio.investing.watchlist_shared_kernel.event.type.UserWatchlistCreatedEvent
-import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistCreatedEvent
-import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistRenamedEvent
-import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistStockAddedEvent
+import com.qstudio.investing.watchlist_shared_kernel.event.type.*
 import kotlinx.coroutines.runBlocking
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
@@ -54,6 +51,14 @@ class WatchlistEventProcessor(
         runBlocking {
             logger.info("on @EventHandler at query side: ${event.javaClass.simpleName}")
             watchlistViewRepository.addSymbolToWatchlist(event.watchlistId, event.symbol)
+        }
+    }
+
+    @EventHandler
+    fun on(event: WatchlistStockRemovedEvent){
+        runBlocking {
+            logger.info("on @EventHandler at query side: ${event.javaClass.simpleName}")
+            watchlistViewRepository.removeSymbolFromWatchlist(event.watchlistId, event.symbol)
         }
     }
 }

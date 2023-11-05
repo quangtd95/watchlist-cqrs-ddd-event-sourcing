@@ -12,4 +12,6 @@ interface WatchlistViewRepository {
     suspend fun getByUserId(userId: String): List<WatchlistView>
 
     suspend fun addSymbolToWatchlist(watchlistId: String, symbol: String)
+
+    suspend fun removeSymbolFromWatchlist(watchlistId: String, symbol: String)
 }
