@@ -8,7 +8,7 @@ data class CreateStockRequest(
     @field:NotBlank(message = "symbol should not be blank")
     val symbol: String,
 
-    @field:NotNull(message = "name should not be null")
-    @field:NotBlank(message = "name should not be blank")
-    val name: String
+    @field:NotNull(message = "companyName should not be null")
+    @field:NotBlank(message = "companyName should not be blank")
+    val companyName: String
 ) : BaseRequest()
