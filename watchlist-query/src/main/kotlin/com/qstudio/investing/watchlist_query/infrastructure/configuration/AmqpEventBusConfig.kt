@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConditionalOnProperty(prefix = "app.messageBus", name = ["type.kt"], havingValue = "amqp", matchIfMissing = false)
+@ConditionalOnProperty(prefix = "app.messageBus", name = ["type"], havingValue = "amqp", matchIfMissing = false)
 class AmqpEventBusConfig {
 
     @Bean
