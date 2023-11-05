@@ -8,6 +8,14 @@ logging:
   level:
     web: info
 
+axon:
+  serializer:
+    general: xstream
+    messages: xstream
+    events: jackson
+  axonserver:
+    context: investing
+
 app:
   messageBus:
     type: axon
