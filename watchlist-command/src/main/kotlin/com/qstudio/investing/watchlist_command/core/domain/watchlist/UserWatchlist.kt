@@ -9,9 +9,7 @@ import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistCreated
 import com.qstudio.investing.watchlist_shared_kernel.event.type.WatchlistRenamedEvent
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
-import org.axonframework.modelling.command.AggregateIdentifier
-import org.axonframework.modelling.command.AggregateLifecycle
-import org.axonframework.modelling.command.AggregateMember
+import org.axonframework.modelling.command.*
 import org.axonframework.spring.stereotype.Aggregate
 import org.slf4j.LoggerFactory
 import java.util.*
@@ -21,7 +19,7 @@ class UserWatchlist : AggregateRoot {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @AggregateIdentifier
-    final lateinit var userId: String
+    final var userId: String? = null
 
     @AggregateMember
     lateinit var watchlists: MutableList<Watchlist>
@@ -37,12 +35,18 @@ class UserWatchlist : AggregateRoot {
     }
 
     @CommandHandler
+    @CreationPolicy(AggregateCreationPolicy.CREATE_IF_MISSING)
     fun handle(command: CreateWatchlistCommand): String {
+        if (this.userId == null) {
+            AggregateLifecycle.apply(UserWatchlistCreatedEvent().also {
+                it.userId = command.userId
+            })
+        }
         command.validate()
 
         val newWatchlistId = UUID.randomUUID().toString()
         AggregateLifecycle.apply(WatchlistCreatedEvent().also {
-            it.userId = this@UserWatchlist.userId
+            it.userId = command.userId
             it.watchlistId = newWatchlistId
             it.name = command.name
         })
