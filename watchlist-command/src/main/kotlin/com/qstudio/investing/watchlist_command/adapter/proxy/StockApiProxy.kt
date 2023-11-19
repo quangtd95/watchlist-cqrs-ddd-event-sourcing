@@ -1,13 +1,13 @@
 package com.qstudio.investing.watchlist_command.adapter.proxy
 
-import com.qstudio.investing.watchlist_command.core.port.StockPort
+import com.qstudio.investing.watchlist_command.core.port.StockProxy
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 
 @Component
-class StockApiProxy(webClientBuilder: WebClient.Builder) : StockPort {
+class StockApiProxy(webClientBuilder: WebClient.Builder) : StockProxy {
 
     @Value("\${app.stock.api.endpoint}")
     private val stockEndpoint = "http://localhost:3031"

@@ -1,10 +1,17 @@
 version: '3.3'
 services:
   axon-server:
-    image: axoniq/axonserver:2023.2.0-jdk-17
+    image: axoniq/axonserver:2023.2.1-jdk-17
     ports:
       - 8024:8024
       - 8124:8124
+    hostname: axon-server
+    environment:
+      "AXONIQ_AXONSERVER_ACCESSCONTROL_ENABLED": false
+      "AXONIQ_AXONSERVER_STANDALONE": true
+      "AXONIQ_AXONSERVER_ACCESSCONTROL_TOKEN": yDYn4PvM9bSsADsrOmH5Fy3juCgNoH6X
+      "AXONIQ_AXONSERVER_ACCESSCONTROL_TOKEN_ADMINTOKEN": O162DxunnCi1G6G0iE4FyJgAz7K9kXXN
+      "AXONIQ_AXONSERVER_DEVMODE_ENABLED": true
     volumes:
       - ./axonserver-data:/axonserver/data
       - ./axonserver-events:/axonserver/events

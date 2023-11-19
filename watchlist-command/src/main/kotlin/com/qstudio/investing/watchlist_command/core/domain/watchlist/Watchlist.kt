@@ -1,6 +1,6 @@
 package com.qstudio.investing.watchlist_command.core.domain.watchlist
 
-import com.qstudio.investing.watchlist_command.core.port.StockPort
+import com.qstudio.investing.watchlist_command.core.port.StockProxy
 import com.qstudio.investing.watchlist_command.core.type.AddStockToWatchlistCommand
 import com.qstudio.investing.watchlist_command.core.type.RemoveStockFromWatchlistCommand
 import com.qstudio.investing.watchlist_command.infrastructure.type.Entity
@@ -22,9 +22,9 @@ class Watchlist : Entity {
 
 
     @CommandHandler
-    fun handle(command: AddStockToWatchlistCommand, stockPort: StockPort) {
+    fun handle(command: AddStockToWatchlistCommand, stockProxy: StockProxy) {
         runBlocking {
-            require(stockPort.checkSymbolExists(command.symbol)) { "symbol ${command.symbol} not found" }
+            require(stockProxy.checkSymbolExists(command.symbol)) { "symbol ${command.symbol} not found" }
             if (isNotIncludeSymbol(command.symbol)) {
                 AggregateLifecycle.apply(WatchlistStockAddedEvent().also {
                     it.userId = command.userId

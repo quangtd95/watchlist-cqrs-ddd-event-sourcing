@@ -1,5 +1,5 @@
 package com.qstudio.investing.watchlist_command.core.port
 
-interface StockPort {
+interface StockProxy {
     suspend fun checkSymbolExists(symbol: String): Boolean
 }
